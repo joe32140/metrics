@@ -25,6 +25,7 @@ from torchmetrics.utilities.imports import _TRANSFORMERS_AVAILABLE
 
 if _TRANSFORMERS_AVAILABLE:
     from transformers import AutoTokenizer
+    from transformers import AutoModel
 else:
     __doctest_skip__ = ["BERTScore"]
 
@@ -167,6 +168,7 @@ class BERTScore(Metric):
                 )
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_name_or_path)
             self.user_tokenizer = False
+            self.model = AutoModel.from_pretrained(self.model_name_or_path or _DEFAULT_MODEL)
 
         self.add_state("preds_input_ids", [], dist_reduce_fx="cat")
         self.add_state("preds_attention_mask", [], dist_reduce_fx="cat")
